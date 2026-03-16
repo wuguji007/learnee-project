@@ -23,6 +23,9 @@ const courseValidation = (data) => {
         title: Joi.string().min(3).max(50).required(),
         description: Joi.string().min(6).max(100).required(),
         price: Joi.number().min(10).max(9999).required(),
+        category: Joi.string().required(),
+        status: Joi.string().valid('上架', '未上架'), // 限制狀態只能是這兩個字串 (非必填，因預設值)
+        chapters: Joi.array(), // 驗證必須為陣列型別(非必填，因有預設值)
     });
     return schema.validate(data);
 };

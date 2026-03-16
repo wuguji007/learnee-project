@@ -25,6 +25,20 @@ const courseSchema = new Schema({
         type: [String],
         default: [],
     },
+    //擴增三欄位
+    category: {
+        type: String,
+        required: true, 
+    },
+    status: {
+        type: String,
+        enum: ['上架', '未上架'], // 限制只能傳入這兩個值
+        default: '未上架',       // 預設為未上架
+    },
+    chapters: {
+        type: Array, 
+        default: [],
+    },
 });
 
 module.exports = mongoose.model('Course', courseSchema);

@@ -6,6 +6,8 @@ dotenv.config();
 const cors = require('cors');
 const passport = require('passport');
 require('./config/passport')(passport);  // 執行passport設定檔，並將實例傳入進行初始化設定
+const cookieParser = require("cookie-parser");
+
 
 const authRoute = require('./routes').auth;
 const courseRoute = require('./routes').course;
@@ -28,10 +30,17 @@ mongoose
     });
 
 
+    
+// CORS設定
+app.use(cors({
+    origin: "http://localhost:3000", // 必須明確指定前端網址，不能用 '*'
+    credentials: true,               // 允許前後端傳遞cookie
+}));
+
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 
 // 路由模組

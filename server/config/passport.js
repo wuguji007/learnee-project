@@ -3,9 +3,20 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../models').user;
 
 
+// 從cookie提取token
+const cookieExtractor = (req) => {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies["jwt"];
+  }
+  return token;
+};
+
+
 module.exports = (passport) => {
   let opts = {};
-  opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
+  // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
+  opts.jwtFromRequest = cookieExtractor; // 改用cookieExtractor
   opts.secretOrKey = process.env.PASSPORT_SECRET;
 
   passport.use(

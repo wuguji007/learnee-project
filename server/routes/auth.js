@@ -79,6 +79,17 @@ router.post('/login', async (req, res) => {
             // 加密簽署，生成token
             const token = jwt.sign(tokenObject, process.env.PASSPORT_SECRET);
             console.log('登入成功，已簽發Token:', token);
+
+
+            // 將token放入cookie
+            res.cookie("jwt", token, {
+            httpOnly: true,  // 禁止前端JS讀取，防XSS
+            secure: process.env.NODE_ENV === "production", // 生產環境需HTTPS才開啟
+            sameSite: "Lax", // 防禦CSRF攻擊
+            maxAge: 1000 * 60 * 60 * 24, // 1 天有效
+            });
+
+
             return res.status(200).json({
                 status: 'success',
                 message: '登入成功!',
@@ -91,5 +102,15 @@ router.post('/login', async (req, res) => {
     });
 });
 
+
+// 登出API(清除cookie)
+router.post("/logout", (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+  });
+  return res.send({ success: true, message: "已登出" });
+});
 
 module.exports = router;

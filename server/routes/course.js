@@ -22,6 +22,39 @@ router.get('/', async (req, res) => {
 });
 
 
+// 根據講師ID取得該講師所有課程API
+router.get('/instructor/:_instructor_id', async (req, res) => {
+    const { _instructor_id } = req.params;
+    try {
+        const courses = await Course
+            .find({ instructor: _instructor_id })
+            .populate('instructor', ['username', 'email'])
+            .exec();
+        console.log(`取得講師 ${_instructor_id} 的課程，共 ${courses.length} 筆`);
+        return res.status(200).json(courses);
+    } catch (error) {
+        console.error('取得講師課程失敗:', error);
+        return res.status(500).json({ status: 'error', message: '取得講師課程失敗...' });
+    }
+});
+
+// 根據學生ID取得該學生已購買課程API
+router.get('/student/:_student_id', async (req, res) => {
+    const { _student_id } = req.params;
+    try {
+        const courses = await Course
+            .find({ students: _student_id })
+            .populate('instructor', ['username', 'email'])
+            .exec();
+        console.log(`取得學生 ${_student_id} 的課程，共 ${courses.length} 筆`);
+        return res.status(200).json(courses);
+    } catch (error) {
+        console.error('取得學生課程失敗:', error);
+        return res.status(500).json({ status: 'error', message: '取得學生課程失敗...' });
+    }
+});
+
+
 // 用課程id取得課程API
 router.get('/:_id', async (req, res) => {
     const { _id } = req.params;
@@ -39,7 +72,8 @@ router.get('/:_id', async (req, res) => {
 })
 
 
-/* --------------- APIs for Instructor --------------- */
+/* --------------- 講師身份APIs --------------- */
+
 // 新增課程API
 router.post('/', async (req, res) => {
 
@@ -55,12 +89,15 @@ router.post('/', async (req, res) => {
     }
 
     // 建立新課程
-    const { title, description, price } = req.body;
+    const { title, description, price, category, status, chapters } = req.body;
     try {
         const newCourse = new Course({
             title,
             description,
             price,
+            category,  
+            status,    
+            chapters,  
             instructor: req.user._id,  // 從req.user中取得講師的ID，這是passport驗證成功後附加在req物件上的使用者資訊
         });
         const savedCourse = await newCourse.save();

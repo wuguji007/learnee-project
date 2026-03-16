@@ -1,20 +1,16 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Mail, Lock, User, Briefcase, ArrowRight, AlertCircle, 
-  UserPlus, LogIn, Sparkles 
-} from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, AlertCircle, LogIn } from 'lucide-react';
 import AuthService from "../services/auth.service";
 
-// 共用錯誤訊息處理函式 (攔截 HTML，轉換為友善提示)
-// ==========================================
+// 共用錯誤訊息處理函式 (攔截HTML，轉換為易讀提示)
 const extractErrorMessage = (error, defaultMessage) => {
   if (!error.response) return defaultMessage;
   
   const { data, status } = error.response;
 
-  // 1. 如果後端回傳的是 HTML 結構 (例如伺服器預設的錯誤頁面)
+  // 1. 如果後端回傳的是HTML結構(例如伺服器預設的錯誤頁面)
   if (typeof data === 'string' && (data.includes('<html') || data.includes('<!DOCTYPE'))) {
     switch(status) {
       case 401: return "登入失敗：電子信箱或密碼錯誤。";
@@ -27,7 +23,7 @@ const extractErrorMessage = (error, defaultMessage) => {
     }
   }
 
-  // 2. 如果後端有定義 JSON 格式的錯誤訊息 (例如 { message: "密碼錯誤" })
+  // 2. 如果後端有定義JSON格式的錯誤訊息(例如 { message: "密碼錯誤" })
   if (data && typeof data === 'object' && data.message) {
     return data.message;
   }
@@ -40,7 +36,7 @@ const extractErrorMessage = (error, defaultMessage) => {
   return defaultMessage;
 };
 
-// --- 共用動畫變數 (繼承自 Home-component) ---
+// 動畫variants helper
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -67,8 +63,8 @@ const LoginComponent = ({ setCurrentUser }) => {
     setIsLoading(true);
     setMessage("");
     try {
-      let response = await AuthService.login(email, password);
-      localStorage.setItem("user", JSON.stringify(response.data));
+      await AuthService.login(email, password);
+      // localStorage.setItem("user", JSON.stringify(response.data));
       window.alert("登入成功。您現在將被重新導向到個人資料頁面。");
       if (setCurrentUser) setCurrentUser(AuthService.getCurrentUser());
       navigate("/profile");

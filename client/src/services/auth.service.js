@@ -16,17 +16,39 @@ class AuthService {
 
     // 登入API
     login(email, password) {
-        return axios.post(API_URL + '/login', { email, password });
+        return axios.post(API_URL + '/login', { email, password })
+            .then((response) => {
+                // 後端只傳回user資訊，token已自動存在cookie中
+                if (response.data.user) {
+                    // 只存取使用者資訊(不存token)
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                }
+                return response.data;
+            });
     }
 
     // 登出API
     logout() {
         localStorage.removeItem("user");
+        // 呼叫後端API清除cookie
+        return axios.post(API_URL + "/logout");
     }
 
     // 取得登入會員data
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem("user"));
+        const userStr = localStorage.getItem("user");
+
+        // null || 字串 "undefined"，都當作沒有登入
+        if (!userStr || userStr === "undefined") {
+        return null;
+        }
+        try {
+            return JSON.parse(userStr);
+        } catch (error) {
+            console.error("解析 LocalStorage 使用者資料時發生錯誤：", error);
+            return null;
+        }
+        // return JSON.parse(localStorage.getItem("user"));
     }
 }
 
