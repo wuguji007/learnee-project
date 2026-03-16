@@ -34,6 +34,13 @@ jobs:
       working-directory: ./server
       run: npm run test:coverage
 
+    # 新增：將後端的 coverage 資料夾上傳保存
+    - name: Upload Server Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: server-coverage-report
+        path: server/coverage/
+
     # === 前端 Client 流程 ===
     - name: Install Client Dependencies
       working-directory: ./client
@@ -41,7 +48,15 @@ jobs:
 
     - name: Run Client Tests
       working-directory: ./client
-      run: npm test -- --watchAll=false --passWithNoTests
+      #在加上 --coverage 來產生前端的覆蓋率報告
+      run: npm test -- --watchAll=false --passWithNoTests --coverage
+
+    # 新增：將前端的 coverage 資料夾上傳保存
+    - name: Upload Client Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: client-coverage-report
+        path: client/coverage/
 
     - name: Build Client (React)
       working-directory: ./client
