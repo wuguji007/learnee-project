@@ -37,7 +37,7 @@ jobs:
 
     - name: Run Server Tests
       working-directory: ./server
-      run: npm test
+      run: npm run test:coverage
 
     # === 前端 Client 流程 ===
     - name: Install Client Dependencies
