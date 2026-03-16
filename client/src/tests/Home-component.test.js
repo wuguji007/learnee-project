@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import HomeComponent from './Home-component';
+import HomeComponent from '../components/Home-component';
 
 describe('HomeComponent', () => {
   it('renders without crashing', () => {
