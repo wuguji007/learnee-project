@@ -10,7 +10,7 @@ jest.mock('swiper/react', () => {
     Swiper: ({ children }) => React.createElement('div', { 'data-testid': 'swiper-mock' }, children),
     SwiperSlide: ({ children }) => React.createElement('div', { 'data-testid': 'swiper-slide-mock' }, children),
   };
-});
+}, { virtual: true });
 
 // Mock 掉 swiper/modules (回傳 null function 即可)
 jest.mock('swiper/modules', () => ({
