@@ -1,39 +1,45 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import HomeComponent from '../components/Home-component';
 
+// 解決 JSX Hoisting 崩潰的「Mock 寫法」
+// 在 mock 內部動態 require('react') 並使用 createElement，徹底避開 Babel JSX 提升陷阱
+jest.mock('swiper/react', () => {
+  const React = require('react');
+  return {
+    Swiper: ({ children }) => React.createElement('div', { 'data-testid': 'swiper-mock' }, children),
+    SwiperSlide: ({ children }) => React.createElement('div', { 'data-testid': 'swiper-slide-mock' }, children),
+  };
+});
 
-// 1. 模擬 swiper/react 套件的元件
-jest.mock('swiper/react', () => ({
-  Swiper: ({ children }) => <div data-testid="swiper-mock">{children}</div>,
-  SwiperSlide: ({ children }) => <div data-testid="swiper-slide-mock">{children}</div>,
-}));
-
-// 2. 模擬 swiper/modules 套件的功能
+// Mock 掉 swiper/modules (回傳 null function 即可)
 jest.mock('swiper/modules', () => ({
   Navigation: () => null,
   Pagination: () => null,
   A11y: () => null,
-  Autoplay: () => null, // 如果你的輪播圖有用到 autoplay 也可以加上
+  Autoplay: () => null,
 }));
 
-// CRA 預設會自動忽略 CSS import，所以 swiper/css 等引入不會造成報錯
+// Mock 掉 CSS 引入 (回傳空物件)
+jest.mock('swiper/css', () => ({}));
+jest.mock('swiper/css/navigation', () => ({}));
+jest.mock('swiper/css/pagination', () => ({}));
+
+// 經過上面完整的 Mock 防護網後，現在可以安全地引入 HomeComponent
+import HomeComponent from '../components/Home-component';
 
 describe('HomeComponent', () => {
-  it('renders without crashing', () => {
+  
+  it('renders HomeComponent containing Swiper securely', () => {
     render(
       <BrowserRouter>
         <HomeComponent />
       </BrowserRouter>
     );
-    // 簡單斷言元件成功渲染
-    expect(true).toBe(true);
+
+    // 讓Swiper (mock)成功被渲染
+    const swiperElements = screen.getAllByTestId('swiper-mock');
+    expect(swiperElements.length).toBeGreaterThan(0);
   });
+
 });
-
-
-// 進階寫法範例：測試畫面上有沒有特定的標題文字
-// 假設你的首頁有 "Learnee" 或是 "Welcome" 的字眼
-// const titleElement = screen.getByText(/Learnee/i);
-// expect(titleElement).toBeInTheDocument();
