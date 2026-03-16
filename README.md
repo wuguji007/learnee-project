@@ -1,6 +1,7 @@
 # LEARNEE - 線上課程學習平台
 
-全端線上學習平台，提供講師與學生互動的數位學習環境。系統具備雙角色權限管理，包含身份驗證、雙重角色系統、課程發布與註冊管理等功能。採用前後端分離架構，並完全基於 MERN Stack (MongoDB, Express.js, React, Node.js) 生態系打造，且針對 XSS 與 CSRF 進行了嚴謹的安全防護設置。
+全端線上學習平台，提供講師與學生互動的數位學習環境。此系統具備雙角色權限管理，包含身份驗證、雙重角色系統、課程發布與註冊管理等功能。
+採用前後端分離架構，並完全基於 MERN Stack (MongoDB, Express.js, React, Node.js) 生態系打造，且針對 XSS 與 CSRF 進行了嚴謹的安全防護設置。
 
 # 專案架構
 
@@ -25,43 +26,33 @@ learnee-project/
 
 ### 後端
 
-框架: Express.js
-
-資料庫: MongoDB
-
-ORM: Mongoose
-
-認證: Passport.js (JWT JSON Web Token)
-
-資料驗證: Joi
-
-測試: Jest, Supertest
+- **框架**: Express.js
+- **資料庫**: MongoDB
+- **ORM**: Mongoose
+- **認證**: Passport.js (JWT JSON Web Token)
+- **資料驗證**: Joi
+- **測試**: Jest, Supertest
 
 ### 前端
 
-框架: React (Create React App)
-
-路由: React Router DOM
-
-UI 樣式: Tailwind CSS
-
-輪播組件: Swiper
-
-HTTP 客戶端: Axios
-
-測試: Jest, React Testing Library
+- **框架**: React (Create React App)
+- **路由**: React Router DOM
+- **UI 樣式**: Tailwind CSS
+- **輪播組件**: Swiper
+- **HTTP 客戶端**: Axios
+- **測試**: Jest, React Testing Library
 
 ### 基礎設施
 
-運行環境: Node.js
-
-CI/CD: GitHub Actions
-
-## 快速開始
+- **運行環境**: Node.js
+- **CI/CD**: GitHub Actions
 
 ### 環境需求
 - Node.js (建議 v16 以上)
 - MongoDB (本地端運行或 MongoDB Atlas)
+- Git
+
+## 快速開始
 
 ### 1. 取得專案代碼
 
@@ -72,36 +63,39 @@ cd learnee-project
 
 ### 2. 後端環境設定與啟動
 
-# 進入後端目錄並安裝依賴
+進入後端目錄並安裝依賴
 
 ```bash
 cd server
 npm install
 ```
 
-# 建立環境變數設定
-# 建立 .env 檔案並設定以下內容：
-# PORT=8080
-# MONGODB_URI=mongodb://localhost:27017/learnee
-# JWT_SECRET=your_jwt_secret_key_here
+建立環境變數設定
+建立 .env 檔案並設定以下內容：
+PORT=8080
+MONGODB_URI=mongodb://localhost:27017/learnee
+JWT_SECRET=your_jwt_secret_key_here
 
-# 啟動開發伺服器
+### 啟動開發伺服器
 
 ```bash
 npm run dev
 
 ```
-# 或啟動生產環境: npm start
 
 
 ### 3. 前端環境設定與啟動
 
-# 開啟新終端機，進入前端目錄並安裝依賴
+開啟新終端機，進入前端目錄並安裝依賴
+```bash
 cd client
 npm install
+```
 
-# 啟動開發伺服器
+啟動開發伺服器
+```bash
 npm start
+```
 
 
 ## 專案結構細節
@@ -137,20 +131,20 @@ client/src/
 ```
 
 
-常見問題排解 (Troubleshooting)
+## 常見問題排解 (Troubleshooting)
 
-問題 1: 連線到後端 API 失敗 (CORS 錯誤)
-# 檢查前端 API 基礎路徑
-# 確認 client/src/services 中的 API URL 是否指向正確的 http://localhost:8080
+### 問題 1: 連線到後端 API 失敗 (CORS 錯誤)
+- 檢查前端 API 基礎路徑
+- 確認 client/src/services 中的 API URL 是否指向正確的 http://localhost:8080
 
-問題 2: MongoDB 連線失敗
-# 檢查本地端 MongoDB 服務狀態 (以 Mac 為例)
-brew services info mongodb-community
-# 若使用 MongoDB Atlas，請確認白名單 IP 是否已設定為開放
-# 檢查 server/.env 中的 MONGODB_URI 格式是否正確
+### 問題 2: MongoDB 連線失敗
+- 檢查本地端 MongoDB 服務狀態 (以 Mac 為例)
+- brew services info mongodb-community
+- 若使用 MongoDB Atlas，請確認白名單 IP 是否已設定為開放
+- 檢查 server/.env 中的 MONGODB_URI 格式是否正確
 
 
-問題 3: 登入後無法獲取個人資料 / 課程發布失敗
-# 這通常是因為 JWT Token 遺失或過期
-# 請清除瀏覽器的 LocalStorage，重新整理網頁並再次登入
-# 檢查後端終端機是否有顯示 Token 驗證失敗的錯誤訊息
+### 問題 3: 登入後無法獲取個人資料 / 課程發布失敗
+- 這通常是因為 JWT Token 遺失或過期
+- 請清除瀏覽器的 LocalStorage，重新整理網頁並再次登入
+- 檢查後端終端機是否有顯示 Token 驗證失敗的錯誤訊息
