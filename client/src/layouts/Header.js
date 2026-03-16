@@ -9,8 +9,7 @@ import {
 import AuthService from "../services/auth.service";
 
 
-// ─── Avatar helper ────────────────────────────────────────────────────────────
-// 根據使用者名稱產生縮寫頭像備援
+// Avatar helper - 根據使用者名稱產生縮寫頭像備援
 const getInitials = (name = "") =>
   name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
  
@@ -19,7 +18,7 @@ const ROLE_LABEL = {
   instructor: "認證講師",
 };
  
-// ─── Dropdown menu items (student vs instructor) ──────────────────────────────
+// Dropdown menu items
 const STUDENT_MENU = [
   {
     group: "帳戶",
@@ -55,7 +54,7 @@ const INSTRUCTOR_MENU = [
   },
 ];
  
-// ─── Dropdown animation variants ─────────────────────────────────────────────
+// Dropdown動畫effects
 const dropdownVariants = {
   hidden: { opacity: 0, y: -8, scale: 0.97 },
   visible: {
@@ -87,7 +86,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
   const menuGroups = isInstructor ? INSTRUCTOR_MENU : STUDENT_MENU;
   const roleLabel = ROLE_LABEL[user?.role] || "會員";
  
-  // Close on outside click
+  // 外部點擊Close
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -103,14 +102,14 @@ function UserDropdown({ currentUser, setCurrentUser }) {
     navigate("/");
   };
  
-  // Avatar: use randomuser portrait based on role as placeholder
+  // 頭像使用randomuser portrait
   const avatarSrc = isInstructor
     ? "https://randomuser.me/api/portraits/women/44.jpg"
     : "https://randomuser.me/api/portraits/men/44.jpg";
  
   return (
     <div ref={ref} className="relative">
-      {/* Avatar trigger button */}
+      {/* Avatar btn */}
       <motion.button
         onClick={() => setOpen(v => !v)}
         whileHover={{ scale: 1.04 }}
@@ -118,7 +117,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
         className="flex items-center gap-2 rounded-full focus:outline-none group"
         aria-expanded={open}
       >
-        {/* Avatar ring animates on open */}
+        {/* Avatar ring */}
         <div className={`relative w-9 h-9 rounded-full ring-2 transition-all duration-200 ${
           open ? "ring-[#0e9888] ring-offset-2" : "ring-gray-200 group-hover:ring-[#0e9888]/60"
         }`}>
@@ -128,12 +127,12 @@ function UserDropdown({ currentUser, setCurrentUser }) {
             className="w-full h-full object-cover rounded-full"
             onError={(e) => { e.target.style.display = "none"; }}
           />
-          {/* Fallback initials */}
+
           <div className="absolute inset-0 flex items-center justify-center bg-[#0e9888] text-white text-xs font-bold rounded-full"
             style={{ display: "none" }}>
             {getInitials(user?.username)}
           </div>
-          {/* Online dot */}
+
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full" />
         </div>
  
@@ -146,7 +145,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
         </motion.div>
       </motion.button>
  
-      {/* Dropdown panel */}
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -157,7 +156,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
             className="absolute right-0 bg-white mt-3 w-64 rounded-2xl overflow-hidden z-50"
             style={{
               transformOrigin: "top right",
-              // Frosted glass core
+            // Frosted glass core
             //   background: "rgba(255, 255, 255, 0.99)",
             //   backdropFilter: "blur(20px) saturate(180%)",
             //   WebkitBackdropFilter: "blur(20px) saturate(180%)",
@@ -165,7 +164,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
               boxShadow: "0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.9)",
             }}
           >
-            {/* Subtle tinted top gradient band */}
+
             <div
               className="absolute inset-x-0 top-0 h-24 pointer-events-none"
               style={{
@@ -173,35 +172,6 @@ function UserDropdown({ currentUser, setCurrentUser }) {
                 borderRadius: "1rem 1rem 0 0",
               }}
             />
- 
-            {/* User info header */}
-            {/* <div
-              className="px-4 pt-4 pb-3 relative"
-              style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative w-11 h-11 flex-shrink-0">
-                  <img
-                    src={avatarSrc}
-                    alt={user?.username}
-                    className="w-full h-full object-cover rounded-xl"
-                    style={{ boxShadow: "0 2px 8px rgba(14,152,136,0.18)" }}
-                  />
-                  {isInstructor && (
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#fec601] rounded-full flex items-center justify-center text-[9px]"
-                      style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.15)" }}>
-                      ✨
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <div className="font-bold text-gray-900 text-sm truncate">
-                    {user?.username || "會員"}
-                  </div>
-                  <div className="text-xs text-gray-400 truncate">{roleLabel}</div>
-                </div>
-              </div>
-            </div> */}
  
             {/* Menu groups */}
             <div className="py-2 relative">
@@ -290,7 +260,7 @@ function UserDropdown({ currentUser, setCurrentUser }) {
 }
 
 
-// ─── Main Header ──────────────────────────────────────────────────────────────
+// 主元件
 export default function Header({ cartCount, currentUser, setCurrentUser }) {
     const [scrolled, setScrolled] = useState(false);
  
@@ -348,7 +318,7 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
           </div>
         </div>
  
-        {/* Right: Icons + Auth */}
+        {/* Right */}
         <div className="flex items-center gap-4">
           <button className="text-gray-500 hover:text-[#0e9888] relative">
             <Bell size={20} />
@@ -364,14 +334,14 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
             )}
           </button>
  
-          {/* ── Logged IN → avatar dropdown ── */}
+          {/* ── Logged in : avatar dropdown ── */}
           {currentUser ? (
             <UserDropdown
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
           ) : (
-            /* ── Logged OUT → 登入 / 註冊 ── */
+            /* ── Logged out : 登入 / 註冊 ── */
             <div className="flex gap-2">
               <button className="block px-4 py-2 border-[1.5px] border-[#0b9b8a]/60 text-[#0b9b8a] hover:text-white text-sm font-bold rounded-md hover:bg-[#0b9b8a] transition-colors shadow-md hover:shadow-lg">
                 <Link to="/login">登入</Link>
@@ -381,91 +351,9 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
               </button>
             </div>
           )}
- 
-          {/* <button className="sm:hidden text-gray-500">
-            <Menu size={24} />
-          </button> */}
         </div>
       </div>
     </header>
   );
 }
 
-
-
-// export default function Header({ cartCount }) {
-    
-//     return(
-//         <>
-//             <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
-//                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-//                     {/* 左側 Logo & Search */}
-//                     <div className="flex items-center gap-6 flex-1">
-//                         <Link to='/'>
-//                             <div className="flex items-center gap-2 cursor-pointer">
-//                             {/* Logo */}
-//                             <div className="w-8 h-8 bg-[#0b9b8a] rounded-lg flex items-center justify-center text-white font-bold text-xl">L</div>
-//                             <span className="text-xl font-bold tracking-tight text-[#021815]">LEARNEE</span>
-//                             </div>
-//                         </Link>
-                        
-//                         <div className="hidden md:flex items-center max-w-md w-full ml-4">
-//                         <div className="relative w-full">
-//                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                             <span className="text-gray-400 text-sm">探索</span>
-//                             <span className="text-gray-300 mx-2">|</span>
-//                             </div>
-//                             {/* Input focus ring */}
-//                             <input 
-//                             type="text" 
-//                             className="block w-full pl-16 pr-12 py-2 border border-gray-200 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#0b9b8a]  focus:shadow-lg sm:text-sm"
-//                             placeholder="搜尋各類音樂、數學、程式及設計課程"
-//                             />
-//                             {/* 搜尋按鈕 */}
-//                                 <button className="absolute inset-y-0 right-0 px-3 bg-[#0b9b8a] rounded-r-full text-white hover:bg-[#0b7a6d] transition-colors">
-//                                     <Search size={20} />
-//                                 </button>
-//                         </div>
-//                         </div>
-//                     </div>
-
-//                     {/* 右側功能 */}
-//                     <div className="flex items-center gap-4">
-//                         <button className="text-gray-500 hover:text-[#0e9888] relative">
-//                             <Bell size={20} />
-//                             {/* Notification dot */}
-//                             <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white transform translate-x-1/2 -translate-y-1/2"></span>    
-//                         </button>
-//                         <button className="text-gray-500 hover:text-[#0b9b8a] relative">
-//                             <ShoppingCart size={20} />
-//                             {cartCount > 0 && (
-//                                 // cartCount badge
-//                                 <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#fec601] text-[10px] text-gray-900 font-bold animate-bounce-short">
-//                                 {cartCount}
-//                                 </span>
-//                             )}
-//                         </button>
-//                         {/* 登入/註冊按鈕 */}
-//                         <div className="flex gap-2">
-//                             <button className="hidden sm:block px-4 py-2 border-[1.5px] border-[#0b9b8a]/60 text-[#0b9b8a] hover:text-white text-sm font-bold rounded-md hover:bg-[#0b9b8a] transition-colors shadow-md hover:shadow-lg">
-//                                 <Link to='/login'>
-//                                     登入
-//                                 </Link>
-//                             </button>
-//                             <button
-//                                 className="hidden sm:block px-4 py-2 bg-[#0b9b8a] text-white text-sm font-bold rounded-md hover:bg-[#0b7a6d] transition-colors shadow-md hover:shadow-lg"
-//                             >
-//                                 <Link to='/register'>
-//                                     註冊
-//                                 </Link>
-//                             </button>
-//                         </div>
-//                         <button className="sm:hidden text-gray-500">
-//                             <Menu size={24} />
-//                         </button>
-//                     </div>
-//                 </div>
-//             </header>
-//         </>
-//     )
-// }
