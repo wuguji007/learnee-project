@@ -49,7 +49,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^swiper(.*)$": "<rootDir>/src/tests/__mocks__/swiperMock.js"
+      "^swiper(.*)$": "<rootDir>/src/tests/mocks/swiperMock.js"
     }
   }
 }
