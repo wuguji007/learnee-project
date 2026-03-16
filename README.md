@@ -70,19 +70,12 @@ cd server
 npm install
 ```
 
-建立環境變數設定
-建立 .env 檔案並設定以下內容：
-PORT=8080
-MONGODB_URI=mongodb://localhost:27017/learnee
-JWT_SECRET=your_jwt_secret_key_here
-
 ### 啟動開發伺服器
 
 ```bash
 npm run dev
 
 ```
-
 
 ### 3. 前端環境設定與啟動
 
