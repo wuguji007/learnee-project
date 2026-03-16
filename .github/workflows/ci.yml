@@ -34,7 +34,7 @@ jobs:
       working-directory: ./server
       run: npm run test:coverage
 
-    # 新增：將後端的 coverage 資料夾上傳保存
+    # 將後端的 coverage 資料夾上傳保存
     - name: Upload Server Coverage Report
       uses: actions/upload-artifact@v4
       with:
@@ -48,10 +48,10 @@ jobs:
 
     - name: Run Client Tests
       working-directory: ./client
-      #在加上 --coverage 來產生前端的覆蓋率報告
+      # 加上 --coverage 來產生前端的覆蓋率報告
       run: npm test -- --watchAll=false --passWithNoTests --coverage
 
-    # 新增：將前端的 coverage 資料夾上傳保存
+    # 將前端的 coverage 資料夾上傳保存
     - name: Upload Client Coverage Report
       uses: actions/upload-artifact@v4
       with:
