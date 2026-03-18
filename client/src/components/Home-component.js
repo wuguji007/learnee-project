@@ -269,7 +269,7 @@ const CrowdfundingSection = ({ onAddToCart }) => {
                   custom={i}
                   whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="bg-white rounded-2xl overflow-hidden border border-gray-100 group flex flex-col"
+                  className="bg-white rounded-2xl overflow-hidden border border-gray-200 group flex flex-col"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <motion.img
