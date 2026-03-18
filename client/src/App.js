@@ -6,10 +6,14 @@ import HomeComponent from "./components/Home-component";
 import RegisterComponent from "./components/Register-component";
 import LoginComponent from "./components/Login-component";
 import ProfileComponent from "./components/Profile-component";
+import CourseDetail from './components/CourseDetail-component';
+import FoundCourseComponent from "./components/Foundcourse-component";
+import Footer from "./layouts/Footer";
+
 import CourseComponent from "./components/Course-component";
 import PostCourseComponent from "./components/PostCourse-component";
 import EnrollComponent from "./components/Enroll-component";
-import Footer from "./layouts/Footer";
+
 
 
 function App() {
@@ -47,6 +51,18 @@ function App() {
                   currentUser={currentUser}
                   setCurrentUser={setCurrentUser}
                 />
+              }
+            />
+            <Route
+              path="/courses/:id"
+              element={<CourseDetail
+                setCartCount={setCartCount} />
+              }
+            />
+            <Route
+              path="/courses/search"
+              element={<FoundCourseComponent
+                setCartCount={setCartCount} />
               }
             />
             <Route

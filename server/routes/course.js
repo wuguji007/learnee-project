@@ -1,13 +1,17 @@
 const router = require('express').Router();
 const Course = require('../models').course;
 const courseValidation = require('../validation').courseValidation;
+const passport = require('passport');
+
+
+// 只有需要身份驗證的路由(POST / PATCH / DELETE)套用此middleware
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
 router.use((req, res, next) => {
     console.log('正在接收course相關請求...');
     next();
 });
-
 
 // 取得所有課程API
 router.get('/', async (req, res) => {
@@ -20,6 +24,45 @@ router.get('/', async (req, res) => {
         return res.status(500).json({ status: 'error', message: '取得所有課程失敗...' });
     }
 });
+
+
+// 根據課程名稱模糊搜尋API（需放在 /:_id 前，避免被攔截）
+// GET /api/courses/findByName/:name
+router.get('/findByName/:name', async (req, res) => {
+    const { name } = req.params;
+    try {
+        // $regex 模糊比對、$options 'i' 不分大小寫
+        const courses = await Course
+            .find({ title: { $regex: name, $options: 'i' } })
+            .populate('instructor', ['username', 'email', 'avatar'])
+            .exec();
+        console.log(`搜尋關鍵字「${name}」，共找到 ${courses.length} 筆課程`);
+        return res.status(200).json(courses);
+    } catch (error) {
+        console.error('搜尋課程失敗:', error);
+        return res.status(500).json({ status: 'error', message: '搜尋課程失敗...' });
+    }
+});
+
+
+// 用課程id取得課程API
+router.get('/:_id', async (req, res) => {
+    const { _id } = req.params;
+    try {
+        const foundCourse = await Course
+            .findOne({ _id })
+            .populate('instructor', ['username', 'email', 'avatar'])
+            .exec();
+        if (!foundCourse) {
+            return res.status(404).json({ status: 'error', message: '找不到此課程' });
+        }
+        console.log('成功取得課程資訊', foundCourse.title);
+        return res.send(foundCourse);
+    } catch (error) {
+        console.error('取得課程失敗...', error);
+        return res.status(500).json({ status: 'error', message: '取得課程失敗...' });
+    }
+})
 
 
 // 根據講師ID取得該講師所有課程API
@@ -55,27 +98,11 @@ router.get('/student/:_student_id', async (req, res) => {
 });
 
 
-// 用課程id取得課程API
-router.get('/:_id', async (req, res) => {
-    const { _id } = req.params;
-    try {
-        const foundCourse = await Course
-            .findOne({ _id })
-            .populate('instructor', ["username", "email"])
-            .exec();
-        console.log('成功取得課程資訊', foundCourse);
-        return res.send(foundCourse);
-    } catch (error) {
-        console.error('取得課程失敗...', error);
-        return res.status(500).json({ status: 'error', message: '取得課程失敗...' });
-    }
-})
-
 
 /* --------------- 講師身份APIs --------------- */
 
 // 新增課程API
-router.post('/', async (req, res) => {
+router.post('/', jwtAuth, async (req, res) => {
 
     // 驗證資料是否符合規範
     const { error } = courseValidation(req.body);
@@ -111,7 +138,7 @@ router.post('/', async (req, res) => {
 
 
 // 編輯課程API
-router.patch('/:_id', async (req, res) => {
+router.patch('/:_id', jwtAuth, async (req, res) => {
     // 驗證資料是否符合規範
     const { error } = courseValidation(req.body);
     if (error) {
@@ -144,7 +171,7 @@ router.patch('/:_id', async (req, res) => {
 
 
 // 刪除課程API
-router.delete('/:_id', async (req, res) => {
+router.delete('/:_id', jwtAuth, async (req, res) => {
     const { _id } = req.params;
     try {
         // 驗證課程是否存在
@@ -167,8 +194,6 @@ router.delete('/:_id', async (req, res) => {
         return res.status(500).json({ status: 'error', message: '刪除課程失敗...' });
     }
 });
-
-
 
 
 module.exports = router;

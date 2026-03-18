@@ -9,7 +9,7 @@ import {
 import AuthService from "../services/auth.service";
 
 
-// Avatar helper - 根據使用者名稱產生縮寫頭像備援
+// Avatar helper縮寫頭像備援
 const getInitials = (name = "") =>
   name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
  
@@ -18,7 +18,7 @@ const ROLE_LABEL = {
   instructor: "認證講師",
 };
  
-// Dropdown menu items
+// 下拉選單items
 const STUDENT_MENU = [
   {
     group: "帳戶",
@@ -75,7 +75,7 @@ const itemVariants = {
   })
 };
  
-// ─── UserDropdown Component ───────────────────────────────────────────────────
+
 function UserDropdown({ currentUser, setCurrentUser }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -263,6 +263,8 @@ function UserDropdown({ currentUser, setCurrentUser }) {
 // 主元件
 export default function Header({ cartCount, currentUser, setCurrentUser }) {
     const [scrolled, setScrolled] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
  
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 10);
@@ -270,6 +272,16 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
  
+  
+    // 送出搜尋 --> 導向 /courses/search?q=關鍵字
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const q = searchQuery.trim();
+        if (!q) return;
+        navigate(`/courses/search?q=${encodeURIComponent(q)}`);
+        setSearchQuery('');
+    };  
+  
   
     return ( 
         <header
@@ -300,7 +312,7 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
             </div>
           </Link>
  
-          <div className="hidden md:flex items-center max-w-md w-full ml-4">
+          <form onSubmit={handleSearch} className="hidden md:flex items-center max-w-md w-full ml-4">
             <div className="relative w-full">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span className="text-gray-400 text-sm">探索</span>
@@ -308,14 +320,17 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
               </div>
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                 className="block w-full pl-16 pr-12 py-2 border border-gray-200 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#0b9b8a] focus:shadow-lg sm:text-sm"
-                placeholder="搜尋各類音樂、數學、程式及設計課程"
+                placeholder="搜尋語言、音樂、料理、創作及設計等各類課程"
               />
-              <button className="absolute inset-y-0 right-0 px-3 bg-[#0b9b8a] rounded-r-full text-white hover:bg-[#0b7a6d] transition-colors">
+              <button type="submit" className="absolute inset-y-0 right-0 px-3 bg-[#0b9b8a] rounded-r-full text-white hover:bg-[#0b7a6d] transition-colors">
                 <Search size={20} />
               </button>
             </div>
-          </div>
+          </form>
         </div>
  
         {/* Right */}

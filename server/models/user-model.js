@@ -27,6 +27,9 @@ const userSchema = new Schema({
         enum: ['student', 'instructor'],
         required: true,
     },
+    avatar: {
+        type: String, default: '',
+    },
     date: {
         type: Date,
         default: Date.now,

@@ -19,9 +19,11 @@ app.get('/healthcheck', (req, res) => {
 });
 
 
-// 連結到MongoDB
+
+// 連結MongoDB：優先讀取環境變數，若無則退回本地資料庫
+const MONGODB_URI = process.env.DB_CONNECT || "mongodb://localhost:27017/mernDB";
 mongoose
-    .connect("mongodb://localhost:27017/mernDB")
+    .connect(MONGODB_URI)
     .then(() => {
         console.log("Connected to MongoDB...");
     })
@@ -29,15 +31,33 @@ mongoose
         console.error("Error connecting to MongoDB:", error);
     });
 
-
-    
-// CORS設定
+// CORS設定：優先讀取環境變數，若無則退回本地的 3000 port
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 app.use(cors({
-    origin: "http://localhost:3000", // 必須明確指定前端網址，不能用 '*'
+    origin: CLIENT_URL, 
     credentials: true,               // 允許前後端傳遞cookie
 }));
 
+
+
+// 連結到MongoDB
+// mongoose
+//     .connect("mongodb://localhost:27017/mernDB")
+//     .then(() => {
+//         console.log("Connected to MongoDB...");
+//     })
+//     .catch((error) => {
+//         console.error("Error connecting to MongoDB:", error);
+//     });
+
+// CORS設定
+// app.use(cors({
+//     origin: "http://localhost:3000", // 必須明確指定前端網址，不能用 '*'
+//     credentials: true,               // 允許前後端傳遞cookie
+// }));
+
 // Middleware
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,9 +65,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // 路由模組
 app.use('/api/user', authRoute);
-// course route要經過jwt驗證，如果request header沒有token或token無效，則request為unauthorized
-// passport.authenticate() 為jwt的middleware
-app.use('/api/courses', passport.authenticate('jwt', {session: false}), courseRoute);
+// 公開讀取路由(GET)不需要JWT，直接掛載courseRoute
+// 需要身份驗證的路由(POST / PATCH / DELETE) --> course.js內各自套用passport.authenticate()
+app.use('/api/courses', courseRoute);
 
 
 app.listen(port, () => {

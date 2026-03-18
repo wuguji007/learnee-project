@@ -8,7 +8,7 @@ import {
 import AuthService from "../services/auth.service";
 
 
-// 共用錯誤訊息處理函式 (攔截 HTML，轉換為友善提示)
+// 共用錯誤訊息處理函式(攔截HTML，轉換為易讀提示)
 const extractErrorMessage = (error, defaultMessage) => {
   if (!error.response) return defaultMessage;
   

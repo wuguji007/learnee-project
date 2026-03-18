@@ -1,6 +1,7 @@
 import axios from 'axios';
-const API_URL = "http://localhost:8080/api/user";
-// const API_URL = `${import.meta.env.BASE_URL}/api/user`;
+// const API_URL = "http://localhost:8080/api/user";
+const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_URL = `${BASE}/api/user`;
 
 class AuthService {
 

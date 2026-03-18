@@ -1,6 +1,7 @@
 import axios from 'axios';
-const API_URL = "http://localhost:8080/api/courses";
-// const API_URL = `${import.meta.env.BASE_URL}/api/courses`;
+// const API_URL = "http://localhost:8080/api/courses";
+const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_URL = `${BASE}/api/courses`;
 
 class CourseService {
 
@@ -23,6 +24,12 @@ class CourseService {
     getCourseByName(name) {
         return axios.get(API_URL + "/findByName/" + name);
     }
+
+    //根據課程_id取得課程
+    getCourseById(_id) {
+        return axios.get(API_URL + '/' + _id);
+    }
+
 
     /**
      * 根據講師ID取得該講師所有課程(需驗證)
