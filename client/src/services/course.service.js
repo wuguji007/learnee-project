@@ -46,7 +46,8 @@ class CourseService {
     // 建立新課程(限講師)
     postNewCourse(title, description, price, category, status, chapters) {
         return axios.post(API_URL,
-            { title, description, price, category, status, chapters }
+            { title, description, price, category, status, chapters },
+            { withCredentials: true }
         );
     }
 
@@ -56,7 +57,10 @@ class CourseService {
      * @param {object} payload   { title, description, price, category, status, chapters }
      */
     updateCourse(_id, payload) {
-        return axios.patch(API_URL + '/' + _id, payload);
+        return axios.patch(API_URL + '/' + _id,
+            payload,
+            { withCredentials: true }
+        );
     }
  
     /**
@@ -64,7 +68,9 @@ class CourseService {
      * @param {string} _id  課程 MongoDB ObjectId
      */
     deleteCourse(_id) {
-        return axios.delete(API_URL + '/' + _id);
+        return axios.delete(API_URL + '/' + _id,
+            { withCredentials: true }
+        );
     }
 
 

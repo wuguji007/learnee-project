@@ -637,23 +637,22 @@ export default function HomeComponent({ setCartCount }) {
 
   useEffect(() => {
     // AbortController：React StrictMode 在開發模式下會執行 useEffect 兩次
-    // 第一次執行後會 cleanup，若不取消請求，第二次執行時 setAllCourses([]) 會蓋掉資料
+    // 第一次執行後會cleanup，若不取消請求，第二次執行時 setAllCourses([]) 會蓋掉資料
     const controller = new AbortController();
  
     const fetchCourses = async () => {
       try {
         const res = await courseService.getAllCourses();
-        // cleanup 已執行（元件 unmount 或 StrictMode 重跑）→ 不 setState，避免蓋掉資料
+        // cleanup 已執行(元件unmount或StrictMode重跑)，不setState，避免蓋掉資料
         if (controller.signal.aborted) return;
         setAllCourses(res.data);
 
-        // ── DEBUG：直接看完整 response 結構 ──
+        // DEBUG：
         // console.log('[DEBUG] res.status:', res.status);
         // console.log('[DEBUG] typeof res.data:', typeof res.data);
         // console.log('[DEBUG] Array.isArray(res.data):', Array.isArray(res.data));
         // console.log('[DEBUG] res.data:', res.data);
         // console.log('[DEBUG] res.data keys:', res.data && typeof res.data === 'object' ? Object.keys(res.data) : 'N/A');
-        // ─────────────────────────────────────
       } catch (err) {
         if (controller.signal.aborted) return;   // 取消的請求不算錯誤
         console.error('課程資料取得失敗：', err);
@@ -667,39 +666,9 @@ export default function HomeComponent({ setCartCount }) {
     return () => controller.abort();
   }, []);
 
-
-
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     try {
-  //       const res = await courseService.getAllCourses();
-
-        // // ── DEBUG：直接看完整 response 結構 ──
-        // console.log('[DEBUG] res.status:', res.status);
-        // console.log('[DEBUG] typeof res.data:', typeof res.data);
-        // console.log('[DEBUG] Array.isArray(res.data):', Array.isArray(res.data));
-        // console.log('[DEBUG] res.data:', res.data);
-        // console.log('[DEBUG] res.data keys:', res.data && typeof res.data === 'object' ? Object.keys(res.data) : 'N/A');
-        // // ─────────────────────────────────────
-
-
-  //       setAllCourses(res.data);
-  //       console.log('成功取得課程資訊');
-
-
-  //     } catch (err) {
-  //       // 401已被攔截器靜默忽略，其他錯誤在此記錄
-  //       console.error("課程資料取得失敗：", err);
-  //     } finally {
-  //       setCoursesLoading(false);
-  //     }
-  //   };
-  //   fetchCourses();
-  // }, []);
  
-  // Hero 輪播：每個指定類別各取「第一門上架課程」，並附加前端 meta
+  // Hero 輪播：每個指定類別各取「第一門上架課程」，並附加前端meta
   // useMemo快取heroSlides
-  
   const heroSlides = useMemo(() => HERO_CATEGORIES
     .map(cat => {
       const course = allCourses.find(
