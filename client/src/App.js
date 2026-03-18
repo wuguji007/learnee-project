@@ -10,8 +10,6 @@ import CourseDetail from './components/CourseDetail-component';
 import FoundCourseComponent from "./components/Foundcourse-component";
 import Footer from "./layouts/Footer";
 
-import CourseComponent from "./components/Course-component";
-import PostCourseComponent from "./components/PostCourse-component";
 import EnrollComponent from "./components/Enroll-component";
 
 
@@ -63,24 +61,6 @@ function App() {
               path="/courses/search"
               element={<FoundCourseComponent
                 setCartCount={setCartCount} />
-              }
-            />
-            <Route
-              path="/course"
-              element={
-                <CourseComponent
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                />
-              }
-            />
-            <Route
-              path="/postCourse"
-              element={
-                <PostCourseComponent
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                />
               }
             />
             <Route

@@ -163,14 +163,14 @@ const CourseForm = ({ initial = null, onSubmit, onCancel, loading }) => {
             <p className="text-xs text-gray-400">{isEdit ? `正在編輯：${initial.title}` : "填寫課程基本資料"}</p>
           </div>
         </div>
-        <motion.button
+        {/* <motion.button
           onClick={onCancel}
           whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }}
           transition={{ duration: 0.18 }}
           className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400"
         >
           <X size={18} />
-        </motion.button>
+        </motion.button> */}
       </div>
 
       {/* Fields */}
@@ -195,7 +195,7 @@ const CourseForm = ({ initial = null, onSubmit, onCancel, loading }) => {
         <div>
           <label className="text-xs font-bold text-gray-600 mb-1.5 block">
             課程金額（NT$）<span className="text-rose-400">*</span>
-            <span className="text-gray-400 font-normal ml-1">上限 200,000</span>
+            <span className="text-gray-400 font-normal ml-1">上限 9,999</span>
           </label>
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-semibold">$</span>
@@ -257,11 +257,11 @@ const CourseForm = ({ initial = null, onSubmit, onCancel, loading }) => {
 
       {/* Footer */}
       <div className="px-6 pb-6 flex items-center justify-end gap-3 border-t border-gray-50 pt-5">
-        <motion.button onClick={onCancel} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+        {/* <motion.button onClick={onCancel} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
           disabled={loading}
           className="px-5 py-2.5 border border-gray-200 text-gray-600 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors">
           取消
-        </motion.button>
+        </motion.button> */}
         <motion.button onClick={handleSubmit}
           whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(14,152,136,0.28)" }} whileTap={{ scale: 0.98 }}
           disabled={loading}

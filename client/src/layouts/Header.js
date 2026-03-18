@@ -42,14 +42,14 @@ const INSTRUCTOR_MENU = [
     group: "帳戶",
     items: [
       { icon: User,     label: "個人檔案",  to: "/profile" },
-      { icon: Settings, label: "帳號設定",  to: "/settings" },
+      // { icon: Settings, label: "帳號設定",  to: "/settings" },
     ]
   },
   {
     group: "課程管理",
     items: [
       { icon: FileText, label: "我的課程",  to: "/profile", tab: "courses" },
-      { icon: Edit3,    label: "發佈課程",  to: "/postCourse" },
+      // { icon: Edit3,    label: "發佈課程",  to: "/postCourse" },
     ]
   },
 ];
@@ -324,7 +324,7 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                 className="block w-full pl-16 pr-12 py-2 border border-gray-200 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#0b9b8a] focus:shadow-lg sm:text-sm"
-                placeholder="搜尋語言、音樂、料理、創作及設計等各類課程"
+                placeholder="搜尋語言、投資、設計、料理及創作等各類課程"
               />
               <button type="submit" className="absolute inset-y-0 right-0 px-3 bg-[#0b9b8a] rounded-r-full text-white hover:bg-[#0b7a6d] transition-colors">
                 <Search size={20} />

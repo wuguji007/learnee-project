@@ -1,7 +1,8 @@
 import axios from 'axios';
 // const API_URL = "http://localhost:8080/api/courses";
-const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 const API_URL = `${BASE}/api/courses`;
+
 
 class CourseService {
 
