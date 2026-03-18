@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 全域防 X 軸溢出
+   html 層用 overflow-x: hidden 剪裁所有超出視窗的內容
+   body 保留 position: relative 讓 fixed 子元素定位基準正確        
+*/
+html {
+  overflow-x: hidden;
+}
+ 
+body {
+  overflow-x: hidden;
+  position: relative;
+}
