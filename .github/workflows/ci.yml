@@ -62,3 +62,20 @@ jobs:
       working-directory: ./client
       # 在指令前加上 CI=false，讓警告不會中斷編譯流程
       run: CI=false npm run build
+
+
+    # CD 持續部署
+    - name: Deploy to Render (Server & Client)
+      # 只有在 main 分支 push 且前面所有測試都通過時才部署
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      env:
+        SERVER_HOOK: ${{ secrets.RENDER_SERVER_HOOK }}
+        CLIENT_HOOK: ${{ secrets.RENDER_CLIENT_HOOK }}
+      run: |
+        echo "Triggering Server Deployment..."
+        curl "$SERVER_HOOK"
+        echo "Triggering Client Deployment..."
+        curl "$CLIENT_HOOK"
+      
+
+
