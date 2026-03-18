@@ -84,10 +84,18 @@ router.post('/login', async (req, res) => {
             // 將token放入cookie
             res.cookie("jwt", token, {
             httpOnly: true,  // 禁止前端JS讀取，防XSS
-            secure: process.env.NODE_ENV === "production", // 生產環境需HTTPS才開啟
-            sameSite: "Lax", // 防禦CSRF攻擊
+            secure: true, 
+            sameSite: none, 
             maxAge: 1000 * 60 * 60 * 24, // 1 天有效
             });
+
+
+            // res.cookie("jwt", token, {
+            // httpOnly: true,  // 禁止前端JS讀取，防XSS
+            // secure: process.env.NODE_ENV === "production", // 生產環境需HTTPS才開啟
+            // sameSite: "Lax", // 防禦CSRF攻擊
+            // maxAge: 1000 * 60 * 60 * 24, // 1 天有效
+            // });
 
 
             return res.status(200).json({

@@ -36,6 +36,7 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 app.use(cors({
     origin: CLIENT_URL, 
     credentials: true,               // 允許前後端傳遞cookie
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
 }));
 
 
