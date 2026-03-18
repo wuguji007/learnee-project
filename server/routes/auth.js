@@ -85,7 +85,7 @@ router.post('/login', async (req, res) => {
             res.cookie("jwt", token, {
             httpOnly: true,  // 禁止前端JS讀取，防XSS
             secure: true, 
-            sameSite: none, 
+            sameSite: 'none', 
             maxAge: 1000 * 60 * 60 * 24, // 1 天有效
             });
 
