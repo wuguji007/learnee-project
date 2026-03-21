@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ status: 'error', message: '密碼錯誤...' });
         }
 
-        // 登入成功，簽發 JWT
+        // 登入成功，簽發JWT
         if (isMatch) {
             //建立payload
             const tokenObject = { _id: userExists._id, email: userExists.email };

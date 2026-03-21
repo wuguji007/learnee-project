@@ -59,7 +59,7 @@ function CourseCard({ course, onAddToCart, index }) {
       className="bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col cursor-pointer group"
       onClick={() => navigate(`/courses/${courseId}`)}
     >
-      {/* 圖片 */}
+      {/* 課程image */}
       <div className="relative h-44 overflow-hidden flex-shrink-0">
         {course.image
           ? <motion.img

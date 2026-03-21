@@ -349,14 +349,14 @@ export default function Header({ cartCount, currentUser, setCurrentUser }) {
             )}
           </button>
  
-          {/* ── Logged in : avatar dropdown ── */}
+          {/* Logged in 顯示avatar dropdown */}
           {currentUser ? (
             <UserDropdown
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
           ) : (
-            /* ── Logged out : 登入 / 註冊 ── */
+            /* Logged out 顯示登入/註冊 */
             <div className="flex gap-2">
               <button className="block px-4 py-2 border-[1.5px] border-[#0b9b8a]/60 text-[#0b9b8a] hover:text-white text-sm font-bold rounded-md hover:bg-[#0b9b8a] transition-colors shadow-md hover:shadow-lg">
                 <Link to="/login">登入</Link>
